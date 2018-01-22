@@ -9,7 +9,7 @@ class Card
 
   # @return [String] Visual display
   def to_s
-    "Value: #{value}, Type: #{type}, Symbol: #{SYMBOL_BY_TYPE[type]}"
+    "#{SYMBOL_BY_TYPE[type]}#{value}"
   end
 end
 
@@ -37,7 +37,7 @@ class Deck
 
   # @return [Integer] number of cards in the pack
   def count
-    cards.length
+    cards.size
   end
 
   # @return [Card|Nil] takes first card
@@ -60,7 +60,7 @@ class Deck
     cards.delete(card) if card
   end
 
-  # insert new card on top if now exist in the Deck
+  # insert new card on top if card does not exists in the Deck
   # @param [Symbol] type
   # @param [Symbol] value
   # @return [Array] cards with the new card on top
