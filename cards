@@ -1,0 +1,72 @@
+class Card
+  SYMBOL_BY_TYPE = {club: '♣', diamond: '♦', heart: '♥', spade: '♠'} # Optional
+
+  attr_accessor :type, :value
+
+  def initialize(type, value)
+    @type, @value = type, value
+  end
+
+  # @return [String] Visual display
+  def to_s
+    "Value: #{value}, Type: #{type}, Symbol: #{SYMBOL_BY_TYPE[type]}"
+  end
+end
+
+class Deck
+  TYPES = %i(club diamond heart spade)
+  VALUES = %i(A 2 3 4 5 6 7 8 9 10 J Q K)
+
+  attr_accessor :cards
+
+  def initialize
+    @cards = TYPES.each_with_object([]) do |type, cards|
+      VALUES.each {|value| cards.push(Card.new(type, value))}
+    end
+  end
+
+  # @return [Array] Cards
+  def reset
+    initialize
+  end
+
+  # @return [Array] shuffled cards
+  def shuffle
+    cards.shuffle!
+  end
+
+  # @return [Integer] number of cards in the pack
+  def count
+    cards.length
+  end
+
+  # @return [Card|Nil] takes first card
+  def take_top
+    cards.shift
+  end
+
+  # @param [Symbol] type
+  # @param [Symbol] value
+  # @return [Card|Nil] requested card
+  def find_card(type, value)
+    cards.find{|card| card.type == type && card.value == value }
+  end
+
+  # @param [Symbol] type
+  # @param [Symbol] value
+  # @return [Card] removed card
+  def remove_card(type, value)
+    card = find_card(type, value)
+    cards.delete(card) if card
+  end
+
+  # insert new card on top if now exist in the Deck
+  # @param [Symbol] type
+  # @param [Symbol] value
+  # @return [Array] cards with the new card on top
+  def add_on_top(type, value)
+    if TYPES.include?(type) && VALUES.include?(value)
+      cards.unshift(Card.new(type, value)) unless find_card(type, value)
+    end
+  end
+end
